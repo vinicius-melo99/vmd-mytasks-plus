@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import styles from './styles.module.css';
 import Head from 'next/head';
 
@@ -15,3 +17,22 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({
+    req,
+  });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};

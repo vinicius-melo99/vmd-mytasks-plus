@@ -12,6 +12,10 @@
     color: #EA3140;
     margin-left: 3px;
   }
+
+  & h1 {
+    user-select: none;
+  }
 }
 
 .content {
@@ -51,11 +55,12 @@
   }
 }
 
-.loginButton {
+.loginButton,
+.logoutButton {
   background-color: transparent;
   outline: none;
   border: 1px solid #fafafa;
-  border-radius: 100%;
+  border-radius: 50%;
   padding: 10px;
   color: #fafafa;
   cursor: pointer;
@@ -64,9 +69,14 @@
   &:hover {
     transform: scale(1.07);
     background-color: #fafafa;
+    color: #0f0f0f;
 
   &:hover svg {
     color: #0f0f0f;
   }
 }
+}
+
+.logoutButton {
+  border-radius: 50px ;
 }
