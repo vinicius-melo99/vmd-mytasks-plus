@@ -84,8 +84,13 @@ const Dashboard = ({ user }: DashboardProps) => {
     currentTarget: { id },
   }: MouseEvent<HTMLButtonElement>) => {
     console.log(id);
+    const ref = collection(db, 'tasks');
 
-    await deleteDoc(doc(db, 'id', id));
+    try {
+      await deleteDoc(doc(ref, id));
+    } catch (e) {
+      console.log(`Erro ao deletar: ${e}`);
+    }
   };
 
   return (
