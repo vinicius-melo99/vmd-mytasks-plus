@@ -57,8 +57,13 @@
   color: #fafafa;
   transition: 300ms;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #1d57af;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
@@ -129,6 +134,7 @@
 
 .taskContent p {
   max-width: 768px;
+  min-width: 400px;
   max-height: 150px;
   overflow-y: auto;
   white-space: pre-wrap;
@@ -145,4 +151,13 @@
   &:hover {
     transform: scale(1.2);
   }
+}
+
+.noTasksContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  font-weight: 300;
 }
