@@ -2,12 +2,27 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { FiShare2 } from 'react-icons/fi';
 import { FaTrash } from 'react-icons/fa';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import styles from './styles.module.css';
 import Head from 'next/head';
 import Textarea from '@/components/Textarea';
 
 const Dashboard = () => {
-  //apenas um teste
+  const [input, setInput] = useState('');
+  const [publicTask, setPublicTask] = useState(false);
+
+  const handleInput = ({
+    target: { value },
+  }: ChangeEvent<HTMLTextAreaElement>) => setInput(value);
+
+  const handlePublicTask = ({
+    target: { checked },
+  }: ChangeEvent<HTMLInputElement>) => setPublicTask(checked);
+
+  const handleSubmitTask = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <Head>
@@ -18,19 +33,27 @@ const Dashboard = () => {
           <div className={styles.contentForm}>
             <h1 className={styles.title}>Qual a sua tarefa?</h1>
 
-            <form>
-              <Textarea placeholder="Digite a sua tarefa..." />
+            <form onSubmit={handleSubmitTask}>
+              <Textarea
+                placeholder="Digite a sua tarefa..."
+                value={input}
+                onChange={handleInput}
+              />
               <div className={styles.checkboxArea}>
                 <input
                   id="public-task"
                   type="checkbox"
                   className={styles.checkbox}
+                  onChange={handlePublicTask}
+                  checked={publicTask}
                 />
                 <label htmlFor="public-task" className={styles.label}>
                   Deixar tarefa pública?
                 </label>
               </div>
-              <button className={styles.submitButton}>Registrar</button>
+              <button className={styles.submitButton} disabled={!input}>
+                Registrar
+              </button>
             </form>
           </div>
         </section>

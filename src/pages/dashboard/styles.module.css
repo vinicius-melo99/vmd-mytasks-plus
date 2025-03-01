@@ -57,8 +57,13 @@
   color: #fafafa;
   transition: 300ms;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #1d57af;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
