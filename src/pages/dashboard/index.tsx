@@ -12,13 +12,15 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore';
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { db } from '../../services/firebaseConnection';
 import { DashboardProps, Task } from '@/@types';
 import styles from './styles.module.css';
 import Head from 'next/head';
 import Textarea from '@/components/Textarea';
 import { generateNewTask } from '@/util/factoryFunctions';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 const Dashboard = ({ user }: DashboardProps) => {
   const [input, setInput] = useState('');
@@ -80,9 +82,7 @@ const Dashboard = ({ user }: DashboardProps) => {
     }
   };
 
-  const handleDelete = async ({
-    currentTarget: { id },
-  }: MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = async (id: string) => {
     console.log(id);
     const ref = collection(db, 'tasks');
 
@@ -91,6 +91,15 @@ const Dashboard = ({ user }: DashboardProps) => {
     } catch (e) {
       console.log(`Erro ao deletar: ${e}`);
     }
+  };
+
+  const handleShare = async (id: string) => {
+    const baseUrl = window.location.origin;
+    const finalUrl = `${baseUrl}/task/${id}`;
+    console.log(finalUrl);
+
+    await navigator.clipboard.writeText(finalUrl);
+    toast('Link copiado para a área de transferência.');
   };
 
   return (
@@ -144,18 +153,28 @@ const Dashboard = ({ user }: DashboardProps) => {
                 {task.isPublic && (
                   <div className={styles.tagContainer}>
                     <label className={styles.tag}>PÚBLICA</label>
-                    <button className={styles.shareButton}>
+                    <button
+                      className={styles.shareButton}
+                      onClick={() => handleShare(task.id as string)}
+                    >
                       <FiShare2 size={22} color="#3183ff" />
                     </button>
                   </div>
                 )}
 
                 <div className={styles.taskContent}>
-                  <p>{task.task}</p>
+                  {task.isPublic ? (
+                    <Link href={`/task/${task.id}`}>
+                      <p>{task.task}</p>
+                    </Link>
+                  ) : (
+                    <p>{task.task}</p>
+                  )}
+
                   <button
                     id={task.id}
                     className={styles.trashButton}
-                    onClick={handleDelete}
+                    onClick={() => handleDelete(task.id as string)}
                   >
                     <FaTrash color="red" size={24} />
                   </button>
