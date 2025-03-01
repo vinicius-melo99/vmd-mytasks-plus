@@ -88,6 +88,7 @@ const Dashboard = ({ user }: DashboardProps) => {
 
     try {
       await deleteDoc(doc(ref, id));
+      toast('Tarefa deletada com sucesso!');
     } catch (e) {
       console.log(`Erro ao deletar: ${e}`);
     }
