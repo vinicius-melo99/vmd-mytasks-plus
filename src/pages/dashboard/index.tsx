@@ -2,14 +2,19 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { FiShare2 } from 'react-icons/fi';
 import { FaTrash } from 'react-icons/fa';
+import { addDoc, collection } from 'firebase/firestore';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { db } from '../../services/firebaseConnection';
+import { DashboardProps, Task } from '@/@types';
 import styles from './styles.module.css';
 import Head from 'next/head';
 import Textarea from '@/components/Textarea';
+import { generateNewTask } from '@/util/factoryFunctions';
 
-const Dashboard = () => {
+const Dashboard = ({ user }: DashboardProps) => {
   const [input, setInput] = useState('');
   const [publicTask, setPublicTask] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleInput = ({
     target: { value },
@@ -19,8 +24,21 @@ const Dashboard = () => {
     target: { checked },
   }: ChangeEvent<HTMLInputElement>) => setPublicTask(checked);
 
-  const handleSubmitTask = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmitTask = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newTask: Task = generateNewTask(input, user.email, publicTask);
+
+    try {
+      setLoading(true);
+      await addDoc(collection(db, 'tasks'), newTask);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+      setPublicTask(false);
+      setInput('');
+    }
   };
 
   return (
@@ -51,8 +69,11 @@ const Dashboard = () => {
                   Deixar tarefa pública?
                 </label>
               </div>
-              <button className={styles.submitButton} disabled={!input}>
-                Registrar
+              <button
+                className={styles.submitButton}
+                disabled={!input || loading}
+              >
+                {!loading ? 'Registrar' : 'Enviando tarefa...'}
               </button>
             </form>
           </div>
@@ -109,6 +130,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   return {
-    props: { session },
+    props: {
+      user: {
+        email: session.user?.email,
+      },
+    },
   };
 };
