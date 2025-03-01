@@ -3,6 +3,7 @@ type UserType = {
 };
 
 export type Task = {
+  id?: string;
   task: string;
   created?: Date;
   email: string;

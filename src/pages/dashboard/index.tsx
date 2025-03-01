@@ -2,8 +2,17 @@ import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { FiShare2 } from 'react-icons/fi';
 import { FaTrash } from 'react-icons/fa';
-import { addDoc, collection } from 'firebase/firestore';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import {
+  addDoc,
+  collection,
+  query,
+  orderBy,
+  where,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import { db } from '../../services/firebaseConnection';
 import { DashboardProps, Task } from '@/@types';
 import styles from './styles.module.css';
@@ -15,6 +24,36 @@ const Dashboard = ({ user }: DashboardProps) => {
   const [input, setInput] = useState('');
   const [publicTask, setPublicTask] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const tasksRef = collection(db, 'tasks');
+      const q = query(
+        tasksRef,
+        orderBy('created', 'desc'),
+        where('email', '==', user.email),
+      );
+
+      onSnapshot(q, (snapshot) => {
+        const taskList: Task[] = [] as Task[];
+
+        snapshot.forEach((doc) => {
+          const task: Task = {
+            id: doc.id,
+            task: doc.data().task,
+            email: doc.data().email,
+            isPublic: doc.data().isPublic,
+            created: doc.data().created,
+          };
+
+          taskList.push(task);
+        });
+
+        setTasks(taskList);
+      });
+    })();
+  }, [user.email]);
 
   const handleInput = ({
     target: { value },
@@ -39,6 +78,14 @@ const Dashboard = ({ user }: DashboardProps) => {
       setPublicTask(false);
       setInput('');
     }
+  };
+
+  const handleDelete = async ({
+    currentTarget: { id },
+  }: MouseEvent<HTMLButtonElement>) => {
+    console.log(id);
+
+    await deleteDoc(doc(db, 'id', id));
   };
 
   return (
@@ -81,32 +128,30 @@ const Dashboard = ({ user }: DashboardProps) => {
 
         <section className={styles.taskContainer}>
           <h1>Minhas Tarefas</h1>
-          <article className={styles.task}>
-            <div className={styles.tagContainer}>
-              <label className={styles.tag}>PÚBLICA</label>
-              <button className={styles.shareButton}>
-                <FiShare2 size={22} color="#3183ff" />
-              </button>
-            </div>
 
-            <div className={styles.taskContent}>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Tempora, enim. Lorem ipsum, dolor sit amet consectetur
-                adipisicing elit. Explicabo, aliquam! Modi sint aspernatur
-                consequuntur, suscipit itaque quia laboriosam inventore totam
-                maiores eius quibusdam dolores aliquid minima laborum a non ut?
-                Earum qui quod assumenda atque tempore accusamus culpa
-                voluptatem reiciendis! Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Cum officiis voluptas perferendis fugiat aut,
-                porro placeat unde eos magnam et molestiae nisi quisquam
-                perspiciatis animi quae. Aut deleniti voluptas corporis?
-              </p>
-              <button className={styles.trashButton}>
-                <FaTrash color="red" size={24} />
-              </button>
-            </div>
-          </article>
+          {tasks.map((task) => (
+            <article className={styles.task} key={task.id}>
+              {task.isPublic && (
+                <div className={styles.tagContainer}>
+                  <label className={styles.tag}>PÚBLICA</label>
+                  <button className={styles.shareButton}>
+                    <FiShare2 size={22} color="#3183ff" />
+                  </button>
+                </div>
+              )}
+
+              <div className={styles.taskContent}>
+                <p>{task.task}</p>
+                <button
+                  id={task.id}
+                  className={styles.trashButton}
+                  onClick={handleDelete}
+                >
+                  <FaTrash color="red" size={24} />
+                </button>
+              </div>
+            </article>
+          ))}
         </section>
       </main>
     </>
