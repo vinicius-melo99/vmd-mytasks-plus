@@ -134,29 +134,35 @@ const Dashboard = ({ user }: DashboardProps) => {
         <section className={styles.taskContainer}>
           <h1>Minhas Tarefas</h1>
 
-          {tasks.map((task) => (
-            <article className={styles.task} key={task.id}>
-              {task.isPublic && (
-                <div className={styles.tagContainer}>
-                  <label className={styles.tag}>PÚBLICA</label>
-                  <button className={styles.shareButton}>
-                    <FiShare2 size={22} color="#3183ff" />
+          {!tasks.length ? (
+            <div className={styles.noTasksContainer}>
+              <p>Comece cadastrando uma nova tarefa...</p>
+            </div>
+          ) : (
+            tasks.map((task) => (
+              <article className={styles.task} key={task.id}>
+                {task.isPublic && (
+                  <div className={styles.tagContainer}>
+                    <label className={styles.tag}>PÚBLICA</label>
+                    <button className={styles.shareButton}>
+                      <FiShare2 size={22} color="#3183ff" />
+                    </button>
+                  </div>
+                )}
+
+                <div className={styles.taskContent}>
+                  <p>{task.task}</p>
+                  <button
+                    id={task.id}
+                    className={styles.trashButton}
+                    onClick={handleDelete}
+                  >
+                    <FaTrash color="red" size={24} />
                   </button>
                 </div>
-              )}
-
-              <div className={styles.taskContent}>
-                <p>{task.task}</p>
-                <button
-                  id={task.id}
-                  className={styles.trashButton}
-                  onClick={handleDelete}
-                >
-                  <FaTrash color="red" size={24} />
-                </button>
-              </div>
-            </article>
-          ))}
+              </article>
+            ))
+          )}
         </section>
       </main>
     </>
