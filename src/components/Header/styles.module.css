@@ -78,5 +78,56 @@
 }
 
 .logoutButton {
-  border-radius: 50px ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+
+  &:hover {
+    transform: scale(1.07);
+    background-color: transparent;
+    color: #0f0f0f;
+  }
+}
+
+.logoutButton img {
+  border-radius: 50%;
+  background-size: contain;
+}
+
+.tooltipDashboardLink,
+.tooltipLogoutButton {
+  display: flex;
+  align-items: center;
+  background-color: inherit;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 15px;
+  text-decoration: none;
+  width: 100%;
+  cursor: pointer;
+  transition: 300ms;
+
+  &:hover {
+    background-color: #fafafa;
+    color: #0f0f0f;
+    border-radius: 4px;
+  }
+}
+
+.tooltipDashboardLink svg {
+  margin-right: 10px;
+}
+
+.tooltipNameBox {
+  width: 100%;
+  text-align: center;
+  /* border-bottom: 1px solid #fafafa; */
+  padding-bottom: 10px;
+  font-size: 15px;
+  margin-bottom: 5px;
 }
