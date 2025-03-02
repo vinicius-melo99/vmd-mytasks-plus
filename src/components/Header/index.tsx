@@ -81,13 +81,22 @@ const Header = () => {
             </Tooltip>
           </>
         ) : (
-          <button
-            type="button"
-            className={styles.loginButton}
-            onClick={() => handleLogin(LOGIN_ACTION)}
-          >
-            <FaUser size={21} />
-          </button>
+          <>
+            <button
+              id="login-button"
+              type="button"
+              className={styles.loginButton}
+              onClick={() => handleLogin(LOGIN_ACTION)}
+            >
+              <FaUser size={21} />
+            </button>
+            <Tooltip
+              anchorSelect="#login-button"
+              content="Faça Login com o Google"
+              delayShow={200}
+              delayHide={200}
+            />
+          </>
         )}
       </section>
     </header>
