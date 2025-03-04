@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { db } from '../../services/firebaseConnection';
-import { DashboardProps, Task } from '@/@types';
+import { DashboardProps, TaskType } from '@/@types';
 import styles from './styles.module.css';
 import Head from 'next/head';
 import Textarea from '@/components/Textarea';
@@ -26,7 +26,7 @@ const Dashboard = ({ user }: DashboardProps) => {
   const [input, setInput] = useState('');
   const [publicTask, setPublicTask] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -38,10 +38,10 @@ const Dashboard = ({ user }: DashboardProps) => {
       );
 
       onSnapshot(q, (snapshot) => {
-        const taskList: Task[] = [] as Task[];
+        const taskList: TaskType[] = [] as TaskType[];
 
         snapshot.forEach((doc) => {
-          const task: Task = {
+          const task: TaskType = {
             id: doc.id,
             task: doc.data().task,
             email: doc.data().email,
@@ -68,13 +68,17 @@ const Dashboard = ({ user }: DashboardProps) => {
   const handleSubmitTask = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newTask: Task = generateNewTask(input, user.email, publicTask);
+    const newTask: TaskType = generateNewTask(input, user.email, publicTask);
 
+    setLoading(true);
     try {
-      setLoading(true);
       await addDoc(collection(db, 'tasks'), newTask);
+      toast.success('Tarefa registrada com sucesso!');
     } catch (err) {
       console.log(err);
+      toast.error(
+        'Erro ao registrar a tarefa! Cheque sua conexão ou tente novamente mais tarde.',
+      );
     } finally {
       setLoading(false);
       setPublicTask(false);
