@@ -22,6 +22,8 @@ import { CommentType, TaskProps, TaskType } from '@/@types';
 import { BiSolidLeftArrow } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import { generateNewCommnet } from '@/util/factoryFunctions';
+import { FaTrash } from 'react-icons/fa';
+import { Tooltip } from 'react-tooltip';
 
 const Task = ({ task, session }: TaskProps) => {
   const [comment, setComment] = useState('');
@@ -140,10 +142,34 @@ const Task = ({ task, session }: TaskProps) => {
                     height={35}
                   />
 
-                  <p>
-                    <BiSolidLeftArrow color="#5f5f5f" size={18} />
+                  <p
+                    style={{
+                      background:
+                        comment.isMine && session ? '#3183FF' : '#5f5f5f',
+                    }}
+                  >
+                    <BiSolidLeftArrow
+                      color={comment.isMine && session ? '#3183FF' : '#5f5f5f'}
+                      size={18}
+                      className={styles.commentArrow}
+                    />
+
                     <span className={styles.commentName}>
-                      {comment.username} - {`${formatedDate}`}
+                      {comment.username} - {`${formatedDate}`}{' '}
+                      {session && comment.isMine && (
+                        <>
+                          <button
+                            id="delete-comment"
+                            className={styles.deleteCommentButton}
+                          >
+                            <FaTrash size={16} color="red" />
+                          </button>
+                          <Tooltip
+                            anchorSelect="#delete-comment"
+                            content="Excluir Comentário"
+                          />
+                        </>
+                      )}
                     </span>
                     {comment.comment}
                   </p>

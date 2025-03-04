@@ -82,6 +82,19 @@
   margin-right: 30px;
 }
 
+.commentName {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.commentName .deleteCommentButton {
+  margin-left: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 .comment p {
  display: flex;
  flex-direction: column;
@@ -96,14 +109,9 @@
  border-radius: 7px;
 }
 
-.comment p svg {
+.comment p .commentArrow {
   position: absolute;
   left: -14px;
   top: calc(50% - (18 / 2));
 }
 
-.commentName {
-  margin-bottom: 5px;
-  font-size: 14px;
-  font-weight: 300;
-}
