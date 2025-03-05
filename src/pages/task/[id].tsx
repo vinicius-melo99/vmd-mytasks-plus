@@ -17,6 +17,7 @@ import {
   addDoc,
   Timestamp,
   orderBy,
+  deleteDoc,
 } from 'firebase/firestore';
 import { CommentType, TaskProps, TaskType } from '@/@types';
 import { BiSolidLeftArrow } from 'react-icons/bi';
@@ -83,6 +84,19 @@ const Task = ({ task, session }: TaskProps) => {
     } finally {
       setLoading(false);
       setComment('');
+    }
+  };
+
+  const handleDeleteComment = async (id: string) => {
+    const commnetsDocRef = doc(db, 'comments', id);
+
+    try {
+      await deleteDoc(commnetsDocRef);
+      toast.success('Seu comentário foi apagado');
+    } catch {
+      toast.error(
+        'Falha ao deletar o comentário. Cheque sua conexão ou tente novamente mais tarde',
+      );
     }
   };
 
@@ -157,8 +171,11 @@ const Task = ({ task, session }: TaskProps) => {
                           <button
                             id="delete-comment"
                             className={styles.deleteCommentButton}
+                            onClick={() =>
+                              handleDeleteComment(comment.id as string)
+                            }
                           >
-                            <FaTrash size={16} color="red" />
+                            <FaTrash size={16} color="#e81616" />
                           </button>
                           <Tooltip
                             anchorSelect="#delete-comment"

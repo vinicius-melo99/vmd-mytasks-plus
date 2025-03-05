@@ -21,6 +21,7 @@ import Textarea from '@/components/Textarea';
 import { generateNewTask } from '@/util/factoryFunctions';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 const Dashboard = ({ user }: DashboardProps) => {
   const [input, setInput] = useState('');
@@ -92,7 +93,7 @@ const Dashboard = ({ user }: DashboardProps) => {
 
     try {
       await deleteDoc(doc(ref, id));
-      toast('Tarefa deletada com sucesso!');
+      toast.success('Tarefa deletada com sucesso!');
     } catch (e) {
       console.log(`Erro ao deletar: ${e}`);
     }
@@ -159,30 +160,42 @@ const Dashboard = ({ user }: DashboardProps) => {
                   <div className={styles.tagContainer}>
                     <label className={styles.tag}>PÚBLICA</label>
                     <button
+                      id="share-button"
                       className={styles.shareButton}
                       onClick={() => handleShare(task.id as string)}
                     >
                       <FiShare2 size={22} color="#3183ff" />
                     </button>
+                    <Tooltip
+                      anchorSelect="#share-button"
+                      content="Compartilhar tarefa"
+                    />
                   </div>
                 )}
 
                 <div className={styles.taskContent}>
                   {task.isPublic ? (
-                    <Link href={`/task/${task.id}`}>
-                      <p>{task.task}</p>
-                    </Link>
+                    <>
+                      <Link href={`/task/${task.id}`} id="access-task">
+                        <p>{task.task}</p>
+                      </Link>
+                      <Tooltip
+                        anchorSelect="#access-task"
+                        content="Acessar tarefa"
+                      />
+                    </>
                   ) : (
                     <p>{task.task}</p>
                   )}
 
                   <button
-                    id={task.id}
+                    id="delete-task"
                     className={styles.trashButton}
                     onClick={() => handleDelete(task.id as string)}
                   >
-                    <FaTrash color="red" size={24} />
+                    <FaTrash color="#bb0202" size={24} />
                   </button>
+                  <Tooltip anchorSelect="#delete-task" />
                 </div>
               </article>
             ))
