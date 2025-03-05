@@ -75,8 +75,7 @@ const Dashboard = ({ user }: DashboardProps) => {
     try {
       await addDoc(collection(db, 'tasks'), newTask);
       toast.success('Tarefa registrada com sucesso!');
-    } catch (err) {
-      console.log(err);
+    } catch {
       toast.error(
         'Erro ao registrar a tarefa! Cheque sua conexão ou tente novamente mais tarde.',
       );
@@ -88,21 +87,21 @@ const Dashboard = ({ user }: DashboardProps) => {
   };
 
   const handleDelete = async (id: string) => {
-    console.log(id);
     const ref = collection(db, 'tasks');
 
     try {
       await deleteDoc(doc(ref, id));
       toast.success('Tarefa deletada com sucesso!');
-    } catch (e) {
-      console.log(`Erro ao deletar: ${e}`);
+    } catch {
+      toast.error(
+        'Erro ao deletar a tarefa! Cheque sua conexão ou tente novamente mais tarde.',
+      );
     }
   };
 
   const handleShare = async (id: string) => {
     const baseUrl = window.location.origin;
     const finalUrl = `${baseUrl}/task/${id}`;
-    console.log(finalUrl);
 
     await navigator.clipboard.writeText(finalUrl);
     toast('Link copiado para a área de transferência.');

@@ -79,8 +79,8 @@ const Task = ({ task, session }: TaskProps) => {
       const collRef = collection(db, 'comments');
       await addDoc(collRef, newComment);
       toast.success('Comentário realizado com sucesso!');
-    } catch (e) {
-      console.log(e);
+    } catch {
+      toast.error('Erro ao realizar o comentário. Tente novamente mais tarde.');
     } finally {
       setLoading(false);
       setComment('');
