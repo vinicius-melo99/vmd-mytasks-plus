@@ -33,3 +33,8 @@ export type CommentType = {
   updated: Date | Timestamp;
   likes: number;
 };
+
+export interface HomeProps {
+  tasksSize: number;
+  commentsSize: number;
+}
