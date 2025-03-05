@@ -29,7 +29,6 @@ export type CommentType = {
   username: string;
   email: string;
   comment: string;
-  isMine: boolean;
   created: Date | Timestamp;
   updated: Date | Timestamp;
   likes: number;

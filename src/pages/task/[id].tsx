@@ -71,7 +71,6 @@ const Task = ({ task, session }: TaskProps) => {
       username: session.user?.name as string,
       email: session.user?.email as string,
       comment,
-      isMine: session.user?.email === task.email,
     });
 
     setLoading(true);
@@ -127,6 +126,8 @@ const Task = ({ task, session }: TaskProps) => {
             <h2>Todos os comentários {`(${allComments.length})`}</h2>
 
             {allComments.map((comment) => {
+              const isCommentMine = comment.email === session.user?.email;
+
               const seconds = (comment.created as Timestamp).seconds;
               const miliseconds = seconds * 1000;
 
@@ -142,21 +143,16 @@ const Task = ({ task, session }: TaskProps) => {
                     height={35}
                   />
 
-                  <p
-                    style={{
-                      background:
-                        comment.isMine && session ? '#3183FF' : '#5f5f5f',
-                    }}
-                  >
+                  <p>
                     <BiSolidLeftArrow
-                      color={comment.isMine && session ? '#3183FF' : '#5f5f5f'}
                       size={18}
                       className={styles.commentArrow}
+                      color="#5f5f5f"
                     />
 
                     <span className={styles.commentName}>
                       {comment.username} - {`${formatedDate}`}{' '}
-                      {session && comment.isMine && (
+                      {session && isCommentMine && (
                         <>
                           <button
                             id="delete-comment"
