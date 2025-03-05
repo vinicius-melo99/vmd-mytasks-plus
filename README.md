@@ -2,7 +2,7 @@
 
 Neste projeto pessoal, desenvolvi uma pequena plataforma interativa de gerenciamento de tarefas.
 
-Para acessar, é necessário realizar o login na ferramenta, no qual é feito pela conta do google. Após autenticar, a pessoa terá acesso à um dashboard no qual poderá cadastrar suas tarefas, podendo escolher entre a opções de deixá-las públicas ou privadas.
+Para acessar, é necessário realizar o login na ferramenta, no qual é feito pela conta do google. Após autenticar, a pessoa terá acesso à um dashboard no qual poderá cadastrar suas tarefas, podendo escolher entre as opções de deixá-las públicas ou privadas.
 
 Caso a tarefa seja pública, outras pessoas poderão acessá-las através de um link compartilhável e interagir deixando comentários, atualizados em tempo real, sobre o que acharam de determinada tarefa. A pessoa que realizou o comentário também tem a opção de excluí-lo posteriormente. Comentários não podem ser feitos de forma anônima, portanto um login é requerido para deixar uma opinião.
 
