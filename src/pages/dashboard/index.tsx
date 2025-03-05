@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { FiShare2 } from 'react-icons/fi';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   addDoc,
   collection,
@@ -22,12 +22,15 @@ import { generateNewTask } from '@/util/factoryFunctions';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { Tooltip } from 'react-tooltip';
+import { useRouter } from 'next/router';
 
 const Dashboard = ({ user }: DashboardProps) => {
   const [input, setInput] = useState('');
   const [publicTask, setPublicTask] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tasks, setTasks] = useState<TaskType[]>([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -107,6 +110,10 @@ const Dashboard = ({ user }: DashboardProps) => {
     toast('Link copiado para a área de transferência.');
   };
 
+  const handleAccessTaks = (id: string) => {
+    router.push(`/task/${id}`);
+  };
+
   return (
     <>
       <Head>
@@ -165,6 +172,17 @@ const Dashboard = ({ user }: DashboardProps) => {
                     >
                       <FiShare2 size={22} color="#3183ff" />
                     </button>
+                    <button
+                      id="access-button"
+                      className={styles.accessTask}
+                      onClick={() => handleAccessTaks(task.id as string)}
+                    >
+                      <FaExternalLinkAlt size={22} color="#3183ff" />
+                    </button>
+                    <Tooltip
+                      anchorSelect="#access-button"
+                      content="Acessar tarefa"
+                    />
                     <Tooltip
                       anchorSelect="#share-button"
                       content="Compartilhar tarefa"
