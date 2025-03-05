@@ -35,9 +35,9 @@ Caso a tarefa seja pública, outras pessoas poderão acessá-las através de um 
 - Ver o perfil da pessoa logada.
 - Editar o perfil da pessoa logada.
 
-## Desenvolvimento
+## Desenvolvimento 🧑‍💻
 
-#### Características Técnicas (Stacks usadas) 🧑‍💻
+#### Características Técnicas (Stacks usadas) 
 
 - HTML5 Semântico
 - CSS Modules
@@ -77,6 +77,6 @@ Caso a tarefa seja pública, outras pessoas poderão acessá-las através de um 
 ---------------------------
 ![](./public/prints/mobile4.png)
 
-## Autor
+# Autor
 
-- Vinicius Melo: [LinkedIn](https://www.linkedin.com/in/vinicius-s-melo/)
+## Vinicius Melo: [LinkedIn](https://www.linkedin.com/in/vinicius-s-melo/)
