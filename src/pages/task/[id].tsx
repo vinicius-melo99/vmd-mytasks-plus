@@ -126,7 +126,7 @@ const Task = ({ task, session }: TaskProps) => {
             <h2>Todos os comentários {`(${allComments.length})`}</h2>
 
             {allComments.map((comment) => {
-              const isCommentMine = comment.email === session.user?.email;
+              const isCommentMine = comment.email === session?.user?.email;
 
               const seconds = (comment.created as Timestamp).seconds;
               const miliseconds = seconds * 1000;
