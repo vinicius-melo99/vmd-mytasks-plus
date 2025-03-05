@@ -106,16 +106,18 @@
   background-color: #3183FF;
   color: #fafafa;
   padding: 5px 10px;
-  margin-right: 10px;
+
   font-size: 12px;
   border-radius: 4px;
 }
 
-.shareButton {
+.shareButton,
+.accessTask {
   border: none;
   background-color: transparent;
   cursor: pointer;
   transition: 0.3s;
+  margin-left: 10px;
   will-change: transform;
   perspective: 1px;
 
