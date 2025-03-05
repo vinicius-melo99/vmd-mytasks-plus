@@ -19,8 +19,14 @@
   border: 1px solid #909090;
   padding: 20px 40px;
   max-height: 250px;
-  overflow: auto;
+  overflow-y: auto;
   border-radius: 5px;
+}
+
+.task p {
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .container p {

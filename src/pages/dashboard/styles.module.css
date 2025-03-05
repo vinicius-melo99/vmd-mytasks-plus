@@ -133,11 +133,13 @@
 }
 
 .taskContent p {
+  width: 100%;
   max-width: 768px;
   min-width: 400px;
   max-height: 150px;
   overflow-y: auto;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .trashButton {
